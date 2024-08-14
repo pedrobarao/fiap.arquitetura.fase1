@@ -24,6 +24,7 @@ A arquitetura do projeto foi baseada na abordagem do DDD (Domain Driven Design) 
 
 ### Infraestrutura
 - **Fase1.Contatos.Infra.Data**: Camada de infraestrutura, responsável por implementar as interfaces de repositório e realizar a comunicação com o banco de dados.
+- Fase1.Infra.CrossCutting: Camada de infraestrutura, responsável por armazenar classes e métodos que são compartilhados entre as demais camadas.
 
 ## Overview da arquitetura 🗃️
 
