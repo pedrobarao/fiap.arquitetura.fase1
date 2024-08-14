@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace Fase1.Commons.Domain.Communication;
+﻿namespace Fase1.Commons.Domain.Communication;
 
 public class ValidationResult
 {
