@@ -4,6 +4,7 @@ Este projeto é parte da entrega da atividade prática do curso de Arquitetura d
 ## Tecnologias Utilizadas 🧑‍💻
 - .NET 8
 - Entity Framework Core
+- Dapper
 - Docker
 - PostgreSQL
 - xUnit
