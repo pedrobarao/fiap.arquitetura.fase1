@@ -14,7 +14,7 @@ services:
     image: postgres:latest
     environment:
       POSTGRES_USER: contatos
-      POSTGRES_PASSWORD: fase1
+      POSTGRES_PASSWORD: contatos
       POSTGRES_DB: contatos
     ports:
       - "5432:5432"
