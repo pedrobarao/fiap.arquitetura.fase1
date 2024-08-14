@@ -32,7 +32,7 @@ A arquitetura do projeto foi baseada na abordagem do DDD (Domain Driven Design) 
 Os testes unitários foram implementados utilizando a biblioteca xUnit. Para executar os testes, basta executar o comando `dotnet test` na raiz do projeto.
 
 ### Cobertura de Testes 🤗
-A cobertura de testes foi realizada utilizando a ferramenta Coverlet. Para visualizar a cobertura de testes, basta executar o comando `dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover` na raiz do projeto e abrir o arquivo `coverage.opencover.xml` no Visual Studio Code.
+A cobertura de testes foi de 78% dos métodos da aplicação, de acordo com o dotCover. Um relatório detalhado pode ser encontrado na pasta `coverage`.
 
 ## Executando a aplicação 🚀
 
