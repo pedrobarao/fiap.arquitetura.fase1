@@ -50,7 +50,7 @@ docker compose -f .\deploy\docker-compose.yaml -p fase1 up -d --build
 ```
 Esse comando irá fazer o build da aplicação e subir o container com a aplicação e o banco de dados.
 
-2 - Utilize o comando a baixo para atualizar a base de dados com as migrations:
+2 - No arquivo appsettings.json (.\src\Fase1.Contatos.Api) ajuste a string de conexão para localhost. Utilize o comando a baixo para atualizar a base de dados com as migrations:
 ```bash
 dotnet ef database update -p .\src\Fase1.Contatos.Infra.Data\Fase1.Contatos.Infra.Data.csproj -s .\src\Fase1.Contatos.Api\Fase1.Contatos.Api.csproj -c ContatoDbContext
 ```
