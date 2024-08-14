@@ -23,12 +23,8 @@ public static class SwaggerConfig
 
     public static WebApplication UseSwaggerConfig(this WebApplication app)
     {
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-            app.MapScalarApiReference(options => { options.EndpointPathPrefix = "api-docs"; });
-        }
+        app.UseSwagger();
+        app.UseSwaggerUI();
 
         return app;
     }
