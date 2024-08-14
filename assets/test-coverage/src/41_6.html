@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\dev\fiap-net\fiap.arquitetura.fase1\test\Fase1.Contatos.Domain.Test\ValueObjects\NomeTest.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using FluentAssertions;
+using ContatoCollection = Fase1.Contatos.Domain.Test.Fixtures.ContatoCollection;
+using ContatoFixture = Fase1.Contatos.Domain.Test.Fixtures.ContatoFixture;
+
+namespace Fase1.Contatos.Domain.Test.ValueObjects;
+
+[Collection(nameof(ContatoCollection))]
+public class NomeTest
+{
+    private readonly ContatoFixture _fixture;
+
+    public NomeTest(ContatoFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
+    [Fact(DisplayName = &quot;Nome com valores v&#225;lidos deve estar v&#225;lido&quot;)]
+    [Trait(&quot;Category&quot;, &quot;Nome&quot;)]
+    public void Nome_ValoresValidos_DeveEstarValido()
+    {
+        // Arrange
+        var nome = _fixture.GerarNomeValido();
+
+        // Act
+        var result = nome.Validar();
+
+        // Assert
+        result.IsValid.Should().BeTrue(&quot;o nome deve estar v&#225;lido&quot;);
+    }
+
+    [Fact(DisplayName = &quot;Nome com primeiro nome nulo ou vazio deve falhar&quot;)]
+    [Trait(&quot;Category&quot;, &quot;Nome&quot;)]
+    public void Nome_PrimeiroNomeNuloOuVazio_DeveEstarInvalido()
+    {
+        // Arrange
+        var primeiroNomeNulo = _fixture.GerarNomePrimeiroNomeNulo();
+        var primeiroNomeVazio = _fixture.GerarNomePrimeiroNomeVazio();
+
+        // Act
+        var resultNulo = primeiroNomeNulo.Validar();
+        var resultVazio = primeiroNomeVazio.Validar();
+
+        // Assert
+        resultNulo.IsValid.Should().BeFalse(&quot;o nome deve estar inv&#225;lido&quot;);
+        resultVazio.IsValid.Should().BeFalse(&quot;o nome deve estar inv&#225;lido&quot;);
+    }
+
+    [Fact(DisplayName = &quot;Nome v&#225;lido deve retornar nome completo corretamente&quot;)]
+    [Trait(&quot;Category&quot;, &quot;Nome&quot;)]
+    public void Nome_NomeValido_DeveRetornarNomeCompletoCorretamente()
+    {
+        // Arrange
+        var nome = _fixture.GerarNomeValido();
+
+        // Act
+        var nomeCompleto = nome.ToString();
+
+        // Assert
+        Assert.Equal($&quot;{nome.PrimeiroNome} {nome.Sobrenome}&quot;, nomeCompleto);
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[12,5,12,44,1],[13,5,13,6,1],[14,9,14,28,1],[15,5,15,6,1],[20,5,20,6,1],[22,9,22,47,1],[25,9,25,37,1],[28,9,28,68,1],[29,5,29,6,1],[34,5,34,6,1],[36,9,36,69,1],[37,9,37,71,1],[40,9,40,53,1],[41,9,41,55,1],[44,9,44,75,1],[45,9,45,76,1],[46,5,46,6,1],[51,5,51,6,1],[53,9,53,47,1],[56,9,56,44,1],[59,9,59,77,1],[60,5,60,6,1]]);
+    </script>
+  </body>
+</html>

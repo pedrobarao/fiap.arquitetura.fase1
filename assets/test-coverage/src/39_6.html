@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\dev\fiap-net\fiap.arquitetura.fase1\test\Fase1.Contatos.Domain.Test\Fixtures\ContatoFixture.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using Bogus;
+using Fase1.Contatos.Domain.Entities;
+using Fase1.Contatos.Domain.ValueObjects;
+
+namespace Fase1.Contatos.Domain.Test.Fixtures;
+
+[CollectionDefinition(nameof(ContatoCollection))]
+public class ContatoCollection : ICollectionFixture&lt;ContatoFixture&gt;
+{
+}
+
+public class ContatoFixture : IDisposable
+{
+    private readonly Faker _faker;
+
+    public ContatoFixture()
+    {
+        _faker = new Faker(&quot;pt_BR&quot;);
+    }
+
+    public void Dispose()
+    {
+    }
+
+    public Nome GerarNome(string nome, string? sobrenome = null)
+    {
+        return new Nome(nome, sobrenome);
+    }
+
+    public Nome GerarNomeValido()
+    {
+        return GerarNome(_faker.Person.FirstName, _faker.Person.LastName);
+    }
+
+    public Nome GerarNomePrimeiroNomeNulo()
+    {
+        return GerarNome(null, _faker.Person.LastName);
+    }
+
+    public Nome GerarNomePrimeiroNomeVazio()
+    {
+        return GerarNome(string.Empty, _faker.Person.LastName);
+    }
+
+    public Email GerarEmail(string endereco)
+    {
+        return new Email(endereco);
+    }
+
+    public Email GerarEmailValido()
+    {
+        return GerarEmail(_faker.Person.Email);
+    }
+
+    public Email GerarEmailNulo()
+    {
+        return new Email(null);
+    }
+
+    public Email GerarEmailVazio()
+    {
+        return new Email(null);
+    }
+
+    public Email GerarEmailInvalido()
+    {
+        return new Email(&quot;invalido&quot;);
+    }
+
+
+    public Telefone GerarTelefone(string ddd, string numero, TipoTelefone tipo)
+    {
+        return new Telefone(ddd, numero, tipo);
+    }
+
+    public Telefone GerarTelefoneValido()
+    {
+        var tipo = _faker.Random.Enum&lt;TipoTelefone&gt;();
+        var ddd = _faker.Random.Int(11, 99);
+        var numero = _faker.Random.Replace(&quot;9########&quot;);
+
+        if (tipo != TipoTelefone.Celular) numero = numero.Remove(0, 1);
+
+        return GerarTelefone(ddd.ToString(), numero, tipo);
+    }
+
+    public Telefone GerarTelefoneDddNulo()
+    {
+        return GerarTelefone(null, _faker.Random.Replace(&quot;9########&quot;), TipoTelefone.Celular);
+    }
+
+    public Telefone GerarTelefoneDddVazio()
+    {
+        return GerarTelefone(string.Empty, _faker.Random.Replace(&quot;9########&quot;), TipoTelefone.Celular);
+    }
+
+    public Telefone GerarTelefoneNumeroNulo()
+    {
+        return GerarTelefone(_faker.Random.Int(11, 99).ToString(), null, TipoTelefone.Celular);
+    }
+
+    public Telefone GerarTelefoneNumeroVazio()
+    {
+        return GerarTelefone(_faker.Random.Int(11, 99).ToString(), string.Empty, TipoTelefone.Celular);
+    }
+
+    public Contato GerarContato(Nome nome, Telefone telefone, Email email)
+    {
+        return new Contato(nome, [telefone], email);
+    }
+
+    public Contato GerarContatoValido()
+    {
+        var nome = GerarNomeValido();
+        var telefone = GerarTelefoneValido();
+        var email = GerarEmailValido();
+        return GerarContato(nome, telefone, email);
+    }
+
+    public Contato GerarContatoInvalido()
+    {
+        var nome = GerarNomePrimeiroNomeNulo();
+        var telefone = GerarTelefoneNumeroNulo();
+        var email = GerarEmailInvalido();
+        return GerarContato(nome, telefone, email);
+    }
+
+    public Contato GerarContatoComNomeInvalido()
+    {
+        var nome = GerarNomePrimeiroNomeNulo();
+        var telefone = GerarTelefoneValido();
+        var email = GerarEmailValido();
+        return GerarContato(nome, telefone, email);
+    }
+
+    public Contato GerarContatoComEmailInvalido()
+    {
+        var nome = GerarNomeValido();
+        var telefone = GerarTelefoneValido();
+        var email = GerarEmailInvalido();
+        return GerarContato(nome, telefone, email);
+    }
+
+    public Contato GerarContatoComTelefoneInvalido()
+    {
+        var nome = GerarNomeValido();
+        var telefone = GerarTelefoneNumeroNulo();
+        var email = GerarEmailValido();
+        return GerarContato(nome, telefone, email);
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[16,5,16,28,1],[17,5,17,6,1],[18,9,18,37,1],[19,5,19,6,1],[22,5,22,6,1],[23,5,23,6,1],[26,5,26,6,1],[27,9,27,42,1],[28,5,28,6,1],[31,5,31,6,1],[32,9,32,75,1],[33,5,33,6,1],[36,5,36,6,1],[37,9,37,56,1],[38,5,38,6,1],[41,5,41,6,1],[42,9,42,64,1],[43,5,43,6,1],[46,5,46,6,1],[47,9,47,36,1],[48,5,48,6,1],[51,5,51,6,1],[52,9,52,48,1],[53,5,53,6,1],[56,5,56,6,1],[57,9,57,32,1],[58,5,58,6,1],[61,5,61,6,1],[62,9,62,32,1],[63,5,63,6,1],[66,5,66,6,1],[67,9,67,38,1],[68,5,68,6,1],[72,5,72,6,1],[73,9,73,48,1],[74,5,74,6,1],[77,5,77,6,1],[78,9,78,55,1],[79,9,79,45,1],[80,9,80,57,1],[82,9,82,42,1],[82,43,82,72,1],[84,9,84,60,1],[85,5,85,6,1],[88,5,88,6,1],[89,9,89,94,1],[90,5,90,6,1],[93,5,93,6,1],[94,9,94,102,1],[95,5,95,6,1],[98,5,98,6,1],[99,9,99,96,1],[100,5,100,6,1],[103,5,103,6,1],[104,9,104,104,1],[105,5,105,6,1],[108,5,108,6,1],[109,9,109,53,1],[110,5,110,6,1],[113,5,113,6,1],[114,9,114,38,1],[115,9,115,46,1],[116,9,116,40,1],[117,9,117,52,1],[118,5,118,6,1],[121,5,121,6,0],[122,9,122,48,0],[123,9,123,50,0],[124,9,124,42,0],[125,9,125,52,0],[126,5,126,6,0],[129,5,129,6,1],[130,9,130,48,1],[131,9,131,46,1],[132,9,132,40,1],[133,9,133,52,1],[134,5,134,6,1],[137,5,137,6,1],[138,9,138,38,1],[139,9,139,46,1],[140,9,140,42,1],[141,9,141,52,1],[142,5,142,6,1],[145,5,145,6,1],[146,9,146,38,1],[147,9,147,50,1],[148,9,148,40,1],[149,9,149,52,1],[150,5,150,6,1]]);
+    </script>
+  </body>
+</html>

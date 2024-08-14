@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\dev\fiap-net\fiap.arquitetura.fase1\test\Fase1.Contatos.Domain.Test\ValueObjects\TelefoneTest.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using FluentAssertions;
+using ContatoCollection = Fase1.Contatos.Domain.Test.Fixtures.ContatoCollection;
+using ContatoFixture = Fase1.Contatos.Domain.Test.Fixtures.ContatoFixture;
+
+namespace Fase1.Contatos.Domain.Test.ValueObjects;
+
+[Collection(nameof(ContatoCollection))]
+public class TelefoneTest
+{
+    private readonly ContatoFixture _fixture;
+
+    public TelefoneTest(ContatoFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
+    [Fact(DisplayName = &quot;Telefone com valores v&#225;lidos deve estar v&#225;lido&quot;)]
+    [Trait(&quot;Category&quot;, &quot;Telefone&quot;)]
+    public void Telefone_ValoresValidos_DeveEstarValido()
+    {
+        // Arrange
+        var telefone = _fixture.GerarTelefoneValido();
+
+        // Act
+        var result = telefone.Validar();
+
+        // Assert
+        result.IsValid.Should().BeTrue(&quot;o telefone deve estar v&#225;lido&quot;);
+    }
+
+    [Fact(DisplayName = &quot;Telefone com DDD nulo ou vazio deve falhar&quot;)]
+    [Trait(&quot;Category&quot;, &quot;Telefone&quot;)]
+    public void Telefone_DddNuloOuVazio_DeveEstarInvalido()
+    {
+        // Arrange
+        var dddNulo = _fixture.GerarTelefoneDddNulo();
+        var dddVazio = _fixture.GerarTelefoneDddVazio();
+
+        // Act
+        var resultNulo = dddNulo.Validar();
+        var resultVazio = dddVazio.Validar();
+
+        // Assert
+        resultNulo.IsValid.Should().BeFalse(&quot;o telefone deve estar inv&#225;lido&quot;);
+        resultVazio.IsValid.Should().BeFalse(&quot;o telefone deve estar inv&#225;lido&quot;);
+    }
+
+    [Fact(DisplayName = &quot;Telefone com n&#250;mero nulo ou vazio deve falhar&quot;)]
+    [Trait(&quot;Category&quot;, &quot;Telefone&quot;)]
+    public void Telefone_NumeroNuloOuVazio_DeveEstarInvalido()
+    {
+        // Arrange
+        var numeroNulo = _fixture.GerarTelefoneNumeroNulo();
+        var numeroVazio = _fixture.GerarTelefoneNumeroVazio();
+
+        // Act
+        var resultNulo = numeroNulo.Validar();
+        var resultVazio = numeroVazio.Validar();
+
+        // Assert
+        resultNulo.IsValid.Should().BeFalse(&quot;o telefone deve estar inv&#225;lido&quot;);
+        resultVazio.IsValid.Should().BeFalse(&quot;o telefone deve estar inv&#225;lido&quot;);
+    }
+
+    [Fact(DisplayName = &quot;Telefone v&#225;lido deve retornar n&#250;mero completo corretamente&quot;)]
+    [Trait(&quot;Category&quot;, &quot;Telefone&quot;)]
+    public void Telefone_Valido_DeveRetornarNumeroCompletoCorretamente()
+    {
+        // Arrange
+        var telefone = _fixture.GerarTelefoneValido();
+
+        // Act
+        var numeroCompleto = telefone.ToString();
+
+        // Assert
+        Assert.Equal($&quot;{telefone.Ddd}{telefone.Numero}&quot;, numeroCompleto);
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[12,5,12,48,1],[13,5,13,6,1],[14,9,14,28,1],[15,5,15,6,1],[20,5,20,6,1],[22,9,22,55,1],[25,9,25,41,1],[28,9,28,72,1],[29,5,29,6,1],[34,5,34,6,1],[36,9,36,55,1],[37,9,37,57,1],[40,9,40,44,1],[41,9,41,46,1],[44,9,44,79,1],[45,9,45,80,1],[46,5,46,6,1],[51,5,51,6,1],[53,9,53,61,1],[54,9,54,63,1],[57,9,57,47,1],[58,9,58,49,1],[61,9,61,79,1],[62,9,62,80,1],[63,5,63,6,1],[68,5,68,6,1],[70,9,70,55,1],[73,9,73,50,1],[76,9,76,74,1],[77,5,77,6,1]]);
+    </script>
+  </body>
+</html>

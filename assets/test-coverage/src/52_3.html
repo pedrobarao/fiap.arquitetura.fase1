@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\dev\fiap-net\fiap.arquitetura.fase1\src\Fase1.Contatos.Infra.Data\Migrations\20240813014048_BaseInicial.Designer.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+// &lt;auto-generated /&gt;
+using System;
+using Fase1.Contatos.Infra.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+
+#nullable disable
+
+namespace Fase1.Contatos.Infra.Data.Migrations
+{
+    [DbContext(typeof(ContatoDbContext))]
+    [Migration(&quot;20240813014048_BaseInicial&quot;)]
+    partial class BaseInicial
+    {
+        /// &lt;inheritdoc /&gt;
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        {
+#pragma warning disable 612, 618
+            modelBuilder
+                .HasAnnotation(&quot;ProductVersion&quot;, &quot;8.0.7&quot;)
+                .HasAnnotation(&quot;Relational:MaxIdentifierLength&quot;, 63);
+
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity(&quot;Fase1.Contatos.Domain.Entities.Contato&quot;, b =&gt;
+                {
+                    b.Property&lt;Guid&gt;(&quot;Id&quot;)
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType(&quot;uuid&quot;);
+
+                    b.HasKey(&quot;Id&quot;);
+
+                    b.ToTable(&quot;Contatos&quot;, (string)null);
+                });
+
+            modelBuilder.Entity(&quot;Fase1.Contatos.Domain.Entities.Contato&quot;, b =&gt;
+                {
+                    b.OwnsOne(&quot;Fase1.Contatos.Domain.ValueObjects.Email&quot;, &quot;Email&quot;, b1 =&gt;
+                        {
+                            b1.Property&lt;Guid&gt;(&quot;ContatoId&quot;)
+                                .HasColumnType(&quot;uuid&quot;);
+
+                            b1.Property&lt;string&gt;(&quot;Endereco&quot;)
+                                .IsRequired()
+                                .HasMaxLength(254)
+                                .HasColumnType(&quot;varchar(254)&quot;)
+                                .HasColumnName(&quot;Email&quot;);
+
+                            b1.HasKey(&quot;ContatoId&quot;);
+
+                            b1.ToTable(&quot;Contatos&quot;);
+
+                            b1.WithOwner()
+                                .HasForeignKey(&quot;ContatoId&quot;);
+                        });
+
+                    b.OwnsOne(&quot;Fase1.Contatos.Domain.ValueObjects.Nome&quot;, &quot;Nome&quot;, b1 =&gt;
+                        {
+                            b1.Property&lt;Guid&gt;(&quot;ContatoId&quot;)
+                                .HasColumnType(&quot;uuid&quot;);
+
+                            b1.Property&lt;string&gt;(&quot;PrimeiroNome&quot;)
+                                .IsRequired()
+                                .HasColumnType(&quot;varchar(60)&quot;)
+                                .HasColumnName(&quot;PrimeiroNome&quot;);
+
+                            b1.Property&lt;string&gt;(&quot;Sobrenome&quot;)
+                                .IsRequired()
+                                .HasColumnType(&quot;varchar(60)&quot;)
+                                .HasColumnName(&quot;Sobrenome&quot;);
+
+                            b1.HasKey(&quot;ContatoId&quot;);
+
+                            b1.ToTable(&quot;Contatos&quot;);
+
+                            b1.WithOwner()
+                                .HasForeignKey(&quot;ContatoId&quot;);
+                        });
+
+                    b.OwnsMany(&quot;Fase1.Contatos.Domain.ValueObjects.Telefone&quot;, &quot;Telefones&quot;, b1 =&gt;
+                        {
+                            b1.Property&lt;Guid&gt;(&quot;ContatoId&quot;)
+                                .HasColumnType(&quot;uuid&quot;);
+
+                            b1.Property&lt;string&gt;(&quot;Ddd&quot;)
+                                .HasColumnType(&quot;varchar(3)&quot;);
+
+                            b1.Property&lt;string&gt;(&quot;Numero&quot;)
+                                .HasColumnType(&quot;varchar(10)&quot;);
+
+                            b1.Property&lt;int&gt;(&quot;Tipo&quot;)
+                                .HasColumnType(&quot;int&quot;);
+
+                            b1.HasKey(&quot;ContatoId&quot;, &quot;Ddd&quot;, &quot;Numero&quot;, &quot;Tipo&quot;);
+
+                            b1.ToTable(&quot;Telefones&quot;, (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey(&quot;ContatoId&quot;);
+                        });
+
+                    b.Navigation(&quot;Email&quot;);
+
+                    b.Navigation(&quot;Nome&quot;)
+                        .IsRequired();
+
+                    b.Navigation(&quot;Telefones&quot;);
+                });
+#pragma warning restore 612, 618
+        }
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[20,9,20,10,0],[22,13,24,70,0],[26,13,26,84,0],[28,13,29,17,0],[29,17,29,18,0],[29,18,30,21,0],[30,21,32,48,0],[32,48,34,21,0],[34,21,34,36,0],[34,36,36,21,0],[36,21,36,57,0],[36,57,37,17,0],[37,17,37,18,0],[37,18,37,20,0],[39,13,40,17,0],[40,17,40,18,0],[40,18,41,21,0],[41,21,42,25,0],[42,25,42,26,0],[42,26,43,29,0],[43,29,44,56,0],[44,56,46,29,0],[46,29,50,57,0],[50,57,52,29,0],[52,29,52,52,0],[52,52,54,29,0],[54,29,54,52,0],[54,52,56,29,0],[56,29,57,61,0],[57,61,58,25,0],[58,25,58,26,0],[58,26,58,28,0],[58,28,60,21,0],[60,21,61,25,0],[61,25,61,26,0],[61,26,62,29,0],[62,29,63,56,0],[63,56,65,29,0],[65,29,68,64,0],[68,64,70,29,0],[70,29,73,61,0],[73,61,75,29,0],[75,29,75,52,0],[75,52,77,29,0],[77,29,77,52,0],[77,52,79,29,0],[79,29,80,61,0],[80,61,81,25,0],[81,25,81,26,0],[81,26,81,28,0],[81,28,83,21,0],[83,21,84,25,0],[84,25,84,26,0],[84,26,85,29,0],[85,29,86,56,0],[86,56,88,29,0],[88,29,89,62,0],[89,62,91,29,0],[91,29,92,63,0],[92,63,94,29,0],[94,29,95,55,0],[95,55,97,29,0],[97,29,97,77,0],[97,77,99,29,0],[99,29,99,67,0],[99,67,101,29,0],[101,29,102,61,0],[102,61,103,25,0],[103,25,103,26,0],[103,26,103,28,0],[103,28,105,21,0],[105,21,105,43,0],[105,43,107,21,0],[107,21,108,39,0],[108,39,110,21,0],[110,21,110,47,0],[110,47,111,17,0],[111,17,111,18,0],[111,18,111,20,0],[113,9,113,10,0]]);
+    </script>
+  </body>
+</html>

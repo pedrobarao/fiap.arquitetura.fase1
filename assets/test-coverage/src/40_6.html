@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\dev\fiap-net\fiap.arquitetura.fase1\test\Fase1.Contatos.Domain.Test\ValueObjects\EmailTest.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using FluentAssertions;
+using ContatoCollection = Fase1.Contatos.Domain.Test.Fixtures.ContatoCollection;
+using ContatoFixture = Fase1.Contatos.Domain.Test.Fixtures.ContatoFixture;
+
+namespace Fase1.Contatos.Domain.Test.ValueObjects;
+
+[Collection(nameof(ContatoCollection))]
+public class EmailTest
+{
+    private readonly ContatoFixture _fixture;
+
+    public EmailTest(ContatoFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
+    [Theory(DisplayName = &quot;E-mail v&#225;lido&quot;)]
+    [Trait(&quot;Category&quot;, &quot;Email&quot;)]
+    [InlineData(&quot;lorem@ipsum.com&quot;)]
+    [InlineData(&quot;user.name+tag+sorting@example.com&quot;)]
+    [InlineData(&quot;email@domain.com&quot;)]
+    [InlineData(&quot;firstname.lastname@domain.com&quot;)]
+    [InlineData(&quot;email@subdomain.domain.com&quot;)]
+    [InlineData(&quot;email@domain.co.jp&quot;)]
+    [InlineData(&quot;firstname+lastname@domain.com&quot;)]
+    [InlineData(&quot;email@123.123.123.123&quot;)]
+    [InlineData(&quot;email@[123.123.123.123]&quot;)]
+    [InlineData(&quot;1234567890@domain.com&quot;)]
+    public void Email_EmailValido_DeveEstarValido(string endereco)
+    {
+        // Arrange
+        var email = _fixture.GerarEmail(endereco);
+
+        // Act
+        var result = email.Validar();
+
+        // Assert
+        result.IsValid.Should().BeTrue(&quot;o e-mail deve estar v&#225;lido&quot;);
+    }
+
+    [Theory(DisplayName = &quot;E-mail inv&#225;lido&quot;)]
+    [Trait(&quot;Category&quot;, &quot;Email&quot;)]
+    [InlineData(&quot;plainaddress&quot;)]
+    [InlineData(&quot;@missingusername.com&quot;)]
+    [InlineData(&quot;username@.com&quot;)]
+    public void Email_Invalido_DeveEstarInvalido(string endereco)
+    {
+        // Arrange
+        var email = _fixture.GerarEmail(endereco);
+
+        // Act
+        var result = email.Validar();
+
+        // Assert
+        result.IsValid.Should().BeFalse(&quot;o e-mail deve estar inv&#225;lido&quot;);
+    }
+
+    [Fact(DisplayName = &quot;E-mail nulo ou vazio deve estar v&#225;lido&quot;)]
+    [Trait(&quot;Category&quot;, &quot;Email&quot;)]
+    public void Email_NuloOuVazio_DeveEstarValido()
+    {
+        // Arrange
+        var emailNulo = _fixture.GerarEmailNulo();
+        var emailVazio = _fixture.GerarEmailVazio();
+
+        // Act
+        var resultNulo = emailNulo.Validar();
+        var resultVazio = emailVazio.Validar();
+
+        // Assert
+        resultNulo.IsValid.Should().BeTrue(&quot;o e-mail nulo deve estar v&#225;lido&quot;);
+        resultVazio.IsValid.Should().BeTrue(&quot;o e-mail vazio deve estar v&#225;lido&quot;);
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[12,5,12,45,1],[13,5,13,6,1],[14,9,14,28,1],[15,5,15,6,1],[30,5,30,6,1],[32,9,32,51,1],[35,9,35,38,1],[38,9,38,70,1],[39,5,39,6,1],[47,5,47,6,1],[49,9,49,51,1],[52,9,52,38,1],[55,9,55,73,1],[56,5,56,6,1],[61,5,61,6,1],[63,9,63,51,1],[64,9,64,53,1],[67,9,67,46,1],[68,9,68,48,1],[71,9,71,79,1],[72,9,72,81,1],[73,5,73,6,1]]);
+    </script>
+  </body>
+</html>

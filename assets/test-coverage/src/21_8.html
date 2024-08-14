@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\dev\fiap-net\fiap.arquitetura.fase1\test\Fase1.Contatos.Api.Test\Controllers\ContatoControllerTest.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using Fase1.Commons.Domain.Communication;
+using Fase1.Contatos.Api.Controllers;
+using Fase1.Contatos.Application.DTOs.Inputs;
+using Fase1.Contatos.Application.DTOs.Outputs;
+using Fase1.Contatos.Application.UseCases.Interfaces;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
+using Moq.AutoMock;
+
+namespace Fase1.Contatos.Api.Test.Controllers;
+
+public class ContatoControllerTests
+{
+    private readonly AutoMocker _mocker;
+
+    public ContatoControllerTests()
+    {
+        _mocker = new AutoMocker();
+    }
+
+    [Fact(DisplayName = &quot;Listar contatos cadastrados deve retornar contatos com sucesso&quot;)]
+    [Trait(&quot;Category&quot;, &quot;ContatoController&quot;)]
+    public async Task Listar_DeveRetornarContatosComSucesso()
+    {
+        // Arrange
+        var pagedResult = new PagedResult&lt;ObterContatoOutput&gt;(new List&lt;ObterContatoOutput&gt;(), 1, 1, 1, &quot;&quot;);
+        _mocker.GetMock&lt;IListarContatoUseCase&gt;()
+            .Setup(u =&gt; u.ExecuteAsync(It.IsAny&lt;int&gt;(), It.IsAny&lt;int&gt;(), It.IsAny&lt;string&gt;()))
+            .ReturnsAsync(pagedResult);
+        var controller = _mocker.CreateInstance&lt;ContatoController&gt;();
+
+        // Act
+        var result = await controller.Listar();
+
+        // Assert
+        var okResult = Assert.IsType&lt;OkObjectResult&gt;(result);
+        Assert.Equal(StatusCodes.Status200OK, okResult.StatusCode);
+        Assert.Equal(pagedResult, okResult.Value);
+    }
+
+    [Fact(DisplayName = &quot;Obter contato cadastrado deve retornar contato com sucesso&quot;)]
+    [Trait(&quot;Category&quot;, &quot;ContatoController&quot;)]
+    public async Task Obter_ContatoEncontrado_DeveRetornarContatoComSucesso()
+    {
+        // Arrange
+        var contatoOutput = new ObterContatoOutput();
+        _mocker.GetMock&lt;IObterContatoUseCase&gt;().Setup(u =&gt; u.ExecuteAsync(It.IsAny&lt;Guid&gt;()))
+            .ReturnsAsync(contatoOutput);
+        var controller = _mocker.CreateInstance&lt;ContatoController&gt;();
+        // Act
+        var result = await controller.Obter(Guid.NewGuid());
+
+        // Assert
+        var okResult = Assert.IsType&lt;OkObjectResult&gt;(result);
+        Assert.Equal(StatusCodes.Status200OK, okResult.StatusCode);
+        Assert.Equal(contatoOutput, okResult.Value);
+    }
+
+    [Fact(DisplayName = &quot;Atualizar contato com valores v&#225;lidos deve atualizar contato com sucesso&quot;)]
+    [Trait(&quot;Category&quot;, &quot;ContatoController&quot;)]
+    public async Task Obter_ContatoNaoExiste_DeveRetornarNotFound()
+    {
+        // Arrange
+        _mocker.GetMock&lt;IObterContatoUseCase&gt;().Setup(u =&gt; u.ExecuteAsync(It.IsAny&lt;Guid&gt;())).ReturnsAsync(() =&gt; null);
+        var controller = _mocker.CreateInstance&lt;ContatoController&gt;();
+        // Act
+        var result = await controller.Obter(Guid.NewGuid());
+
+        // Assert
+        Assert.IsType&lt;NotFoundResult&gt;(result);
+    }
+
+    [Fact(DisplayName = &quot;Criar contato com valores v&#225;lidos deve criar contato com sucesso&quot;)]
+    [Trait(&quot;Category&quot;, &quot;ContatoController&quot;)]
+    public async Task Criar_ContatoValido_DeveCriarContatoComSucesso()
+    {
+        // Arrange
+        var contatoCriadoOutput = new ContatoCriadoOutput { Id = Guid.NewGuid() };
+        var resultMock = new Result&lt;ContatoCriadoOutput&gt;();
+        resultMock.SetData(contatoCriadoOutput);
+        _mocker.GetMock&lt;ICadastrarContatoUseCase&gt;().Setup(u =&gt; u.ExecuteAsync(It.IsAny&lt;NovoContatoInput&gt;()))
+            .ReturnsAsync(resultMock);
+        var controller = _mocker.CreateInstance&lt;ContatoController&gt;();
+
+        // Act
+        var result = await controller.Criar(new NovoContatoInput());
+
+        // Assert
+        var createdResult = Assert.IsType&lt;CreatedResult&gt;(result);
+        Assert.Equal(StatusCodes.Status201Created, createdResult.StatusCode);
+        Assert.Equal(contatoCriadoOutput, createdResult.Value);
+    }
+
+    [Fact(DisplayName = &quot;Criar contato com valores inv&#225;lidos deve retornar erro&quot;)]
+    [Trait(&quot;Category&quot;, &quot;ContatoController&quot;)]
+    public async Task Criar_ContatoInvalido_DeveRetornarErro()
+    {
+        // Arrange
+        var resultMock = new Result&lt;ContatoCriadoOutput&gt;();
+        resultMock.AddError(&quot;Erro&quot;);
+        _mocker.GetMock&lt;ICadastrarContatoUseCase&gt;().Setup(u =&gt; u.ExecuteAsync(It.IsAny&lt;NovoContatoInput&gt;()))
+            .ReturnsAsync(resultMock);
+        var controller = _mocker.CreateInstance&lt;ContatoController&gt;();
+        // Act
+        var result = await controller.Criar(new NovoContatoInput());
+
+        // Assert
+        var badRequestResult = Assert.IsType&lt;BadRequestObjectResult&gt;(result);
+        Assert.Equal(StatusCodes.Status400BadRequest, badRequestResult.StatusCode);
+    }
+
+    [Fact(DisplayName = &quot;Atualizar contato com valores v&#225;lidos deve atualizar contato com sucesso&quot;)]
+    [Trait(&quot;Category&quot;, &quot;ContatoController&quot;)]
+    public async Task Atualizar_ContatoValido_DeveAtualizarContatoComSucesso()
+    {
+        // Arrange
+        var resultMock = new Result();
+        _mocker.GetMock&lt;IAtualizarContatoUseCase&gt;().Setup(u =&gt; u.ExecuteAsync(It.IsAny&lt;AtualizarContatoInput&gt;()))
+            .ReturnsAsync(resultMock);
+        var id = Guid.NewGuid();
+        var controller = _mocker.CreateInstance&lt;ContatoController&gt;();
+        // Act
+        var result = await controller.Atualizar(id, new AtualizarContatoInput { Id = id });
+
+        // Assert
+        var okResult = Assert.IsType&lt;OkObjectResult&gt;(result);
+        Assert.Equal(StatusCodes.Status200OK, okResult.StatusCode);
+    }
+
+    [Fact(DisplayName = &quot;Atualizar contato com id de rota diferente do id de input deve retornar erro&quot;)]
+    [Trait(&quot;Category&quot;, &quot;ContatoController&quot;)]
+    public async Task Atualizar_IdRotaDiferenteIdInput_DeveRetornarErro()
+    {
+        // Arrange
+        var controller = _mocker.CreateInstance&lt;ContatoController&gt;();
+
+        // Act
+        var result = await controller.Atualizar(Guid.NewGuid(), new AtualizarContatoInput { Id = Guid.NewGuid() });
+
+        // Assert
+        var badRequestResult = Assert.IsType&lt;BadRequestObjectResult&gt;(result);
+        Assert.Equal(StatusCodes.Status400BadRequest, badRequestResult.StatusCode);
+    }
+
+    [Fact(DisplayName = &quot;Atualizar contato com valores inv&#225;lidos deve retornar erro&quot;)]
+    [Trait(&quot;Category&quot;, &quot;ContatoController&quot;)]
+    public async Task Atualizar_ContatoInvalido_DeveRetornarErro()
+    {
+        // Arrange
+        var resultMock = new Result();
+        resultMock.AddError(&quot;Erro&quot;);
+        _mocker.GetMock&lt;IAtualizarContatoUseCase&gt;().Setup(u =&gt; u.ExecuteAsync(It.IsAny&lt;AtualizarContatoInput&gt;()))
+            .ReturnsAsync(resultMock);
+        var controller = _mocker.CreateInstance&lt;ContatoController&gt;();
+        // Act
+        var result = await controller.Atualizar(Guid.NewGuid(), new AtualizarContatoInput { Id = Guid.NewGuid() });
+
+        // Assert
+        var badRequestResult = Assert.IsType&lt;BadRequestObjectResult&gt;(result);
+        Assert.Equal(StatusCodes.Status400BadRequest, badRequestResult.StatusCode);
+    }
+
+    [Fact(DisplayName = &quot;Excluir contato deve excluir com sucesso&quot;)]
+    [Trait(&quot;Category&quot;, &quot;ContatoController&quot;)]
+    public async Task Excluir_ContatoValido_DeveExcluirContatoComSucesso()
+    {
+        // Arrange
+        var controller = _mocker.CreateInstance&lt;ContatoController&gt;();
+
+        // Act
+        var result = await controller.Excluir(It.IsAny&lt;Guid&gt;());
+
+        // Assert
+        var noContentResult = Assert.IsType&lt;NoContentResult&gt;(result);
+        Assert.Equal(StatusCodes.Status204NoContent, noContentResult.StatusCode);
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[17,5,17,36,1],[18,5,18,6,1],[19,9,19,36,1],[20,5,20,6,1],[25,5,25,6,1],[27,9,27,108,1],[28,9,30,40,1],[31,9,31,70,1],[34,9,34,48,1],[37,9,37,62,1],[38,9,38,68,1],[39,9,39,51,1],[40,5,40,6,1],[45,5,45,6,1],[47,9,47,54,1],[48,9,49,42,1],[50,9,50,70,1],[52,9,52,61,1],[55,9,55,62,1],[56,9,56,68,1],[57,9,57,53,1],[58,5,58,6,1],[63,5,63,6,1],[65,9,65,113,1],[65,113,65,117,1],[65,117,65,119,1],[66,9,66,70,1],[68,9,68,61,1],[71,9,71,47,1],[72,5,72,6,1],[77,5,77,6,1],[79,9,79,83,1],[80,9,80,60,1],[81,9,81,49,1],[82,9,83,39,1],[84,9,84,70,1],[87,9,87,69,1],[90,9,90,66,1],[91,9,91,78,1],[92,9,92,64,1],[93,5,93,6,1],[98,5,98,6,1],[100,9,100,60,1],[101,9,101,37,1],[102,9,103,39,1],[104,9,104,70,1],[106,9,106,69,1],[109,9,109,78,1],[110,9,110,84,1],[111,5,111,6,1],[116,5,116,6,1],[118,9,118,39,1],[119,9,120,39,1],[121,9,121,33,1],[122,9,122,70,1],[124,9,124,92,1],[127,9,127,62,1],[128,9,128,68,1],[129,5,129,6,1],[134,5,134,6,1],[136,9,136,70,1],[139,9,139,116,1],[142,9,142,78,1],[143,9,143,84,1],[144,5,144,6,1],[149,5,149,6,1],[151,9,151,39,1],[152,9,152,37,1],[153,9,154,39,1],[155,9,155,70,1],[157,9,157,116,1],[160,9,160,78,1],[161,9,161,84,1],[162,5,162,6,1],[167,5,167,6,1],[169,9,169,70,1],[172,9,172,65,1],[175,9,175,70,1],[176,9,176,82,1],[177,5,177,6,1]]);
+    </script>
+  </body>
+</html>
