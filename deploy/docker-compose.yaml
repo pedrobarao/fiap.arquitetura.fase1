@@ -12,6 +12,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
   postgres:
     image: postgres:latest
+    container_name: contatos-postgres
     environment:
       POSTGRES_USER: contatos
       POSTGRES_PASSWORD: contatos
