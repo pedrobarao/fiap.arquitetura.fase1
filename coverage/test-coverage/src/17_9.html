@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\dev\fiap-net\fiap.arquitetura.fase1\test\Fase1.Contatos.Application.Test\Fixtures\ContatoFixture.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using Bogus;
+using Fase1.Contatos.Domain.Entities;
+using Fase1.Contatos.Domain.ValueObjects;
+
+namespace Fase1.Contatos.Application.Test.Fixtures;
+
+[CollectionDefinition(nameof(ContatoCollection))]
+public class ContatoCollection : ICollectionFixture&lt;ContatoFixture&gt;
+{
+}
+
+public class ContatoFixture : IDisposable
+{
+    private readonly Faker _faker;
+
+    public ContatoFixture()
+    {
+        _faker = new Faker(&quot;pt_BR&quot;);
+    }
+
+    public void Dispose()
+    {
+    }
+
+    public Nome GerarNome(string nome, string? sobrenome = null)
+    {
+        return new Nome(nome, sobrenome);
+    }
+
+    public Nome GerarNomeValido()
+    {
+        return GerarNome(_faker.Person.FirstName, _faker.Person.LastName);
+    }
+
+    public Nome GerarNomePrimeiroNomeNulo()
+    {
+        return GerarNome(null, _faker.Person.LastName);
+    }
+
+    public Email GerarEmail(string endereco)
+    {
+        return new Email(endereco);
+    }
+
+    public Email GerarEmailValido()
+    {
+        return GerarEmail(_faker.Person.Email);
+    }
+
+    public Email GerarEmailInvalido()
+    {
+        return new Email(&quot;invalido&quot;);
+    }
+
+
+    public Telefone GerarTelefone(string ddd, string numero, TipoTelefone tipo)
+    {
+        return new Telefone(ddd, numero, tipo);
+    }
+
+    public Telefone GerarTelefoneValido()
+    {
+        var tipo = _faker.Random.Enum&lt;TipoTelefone&gt;();
+        var ddd = _faker.Random.Int(11, 99);
+        var numero = _faker.Random.Replace(&quot;9########&quot;);
+
+        if (tipo != TipoTelefone.Celular) numero = numero.Remove(0, 1);
+
+        return GerarTelefone(ddd.ToString(), numero, tipo);
+    }
+
+    public Telefone GerarTelefoneNumeroNulo()
+    {
+        return GerarTelefone(_faker.Random.Int(11, 99).ToString(), null, TipoTelefone.Celular);
+    }
+
+    public Contato GerarContato(Nome nome, Telefone telefone, Email email)
+    {
+        return new Contato(nome, [telefone], email);
+    }
+
+    public Contato GerarContatoValido()
+    {
+        var nome = GerarNomeValido();
+        var telefone = GerarTelefoneValido();
+        var email = GerarEmailValido();
+        return GerarContato(nome, telefone, email);
+    }
+
+    public Contato GerarContatoInvalido()
+    {
+        var nome = GerarNomePrimeiroNomeNulo();
+        var telefone = GerarTelefoneNumeroNulo();
+        var email = GerarEmailInvalido();
+        return GerarContato(nome, telefone, email);
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[16,5,16,28,1],[17,5,17,6,1],[18,9,18,37,1],[19,5,19,6,1],[22,5,22,6,1],[23,5,23,6,1],[26,5,26,6,1],[27,9,27,42,1],[28,5,28,6,1],[31,5,31,6,1],[32,9,32,75,1],[33,5,33,6,1],[36,5,36,6,1],[37,9,37,56,1],[38,5,38,6,1],[41,5,41,6,1],[42,9,42,36,1],[43,5,43,6,1],[46,5,46,6,1],[47,9,47,48,1],[48,5,48,6,1],[51,5,51,6,1],[52,9,52,38,1],[53,5,53,6,1],[57,5,57,6,1],[58,9,58,48,1],[59,5,59,6,1],[62,5,62,6,1],[63,9,63,55,1],[64,9,64,45,1],[65,9,65,57,1],[67,9,67,42,1],[67,43,67,72,1],[69,9,69,60,1],[70,5,70,6,1],[73,5,73,6,1],[74,9,74,96,1],[75,5,75,6,1],[78,5,78,6,1],[79,9,79,53,1],[80,5,80,6,1],[83,5,83,6,1],[84,9,84,38,1],[85,9,85,46,1],[86,9,86,40,1],[87,9,87,52,1],[88,5,88,6,1],[91,5,91,6,1],[92,9,92,48,1],[93,9,93,50,1],[94,9,94,42,1],[95,9,95,52,1],[96,5,96,6,1]]);
+    </script>
+  </body>
+</html>

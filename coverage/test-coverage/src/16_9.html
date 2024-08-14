@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\dev\fiap-net\fiap.arquitetura.fase1\test\Fase1.Contatos.Application.Test\UseCases\AtualizaContatoUseCaseTest.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using Bogus;
+using Fase1.Commons.Domain.DomainObjects;
+using Fase1.Contatos.Application.DTOs.Inputs;
+using Fase1.Contatos.Application.Test.Fixtures;
+using Fase1.Contatos.Application.UseCases;
+using Fase1.Contatos.Domain.Repositories;
+using FluentAssertions;
+using Moq;
+using Moq.AutoMock;
+
+namespace Fase1.Contatos.Application.Test.UseCases;
+
+[Collection(nameof(ContatoCollection))]
+public class AtualizaContatoUseCaseTest
+{
+    private readonly ContatoFixture _fixture;
+    private readonly AutoMocker _mocker;
+
+    public AtualizaContatoUseCaseTest(ContatoFixture fixture)
+    {
+        _fixture = fixture;
+        _mocker = new AutoMocker();
+    }
+
+    [Fact(DisplayName = &quot;Atualizar contato com valores v&#225;lidos deve atualizar contato com sucesso&quot;)]
+    [Trait(&quot;Category&quot;, &quot;AtualizarContatoUseCase&quot;)]
+    public async Task AtualizarContatoUseCase_ContatoValido_DeveAtualizarContatoComSucesso()
+    {
+        // Arrange
+        var contato = _fixture.GerarContatoValido();
+        _mocker.GetMock&lt;IContatoRepository&gt;().Setup(r =&gt; r.ObterContatoPorIdAsync(It.IsAny&lt;Guid&gt;(), true))
+            .ReturnsAsync(contato);
+        _mocker.GetMock&lt;IContatoRepository&gt;().Setup(r =&gt; r.UnitOfWork.Commit()).ReturnsAsync(() =&gt; true);
+        var useCase = _mocker.CreateInstance&lt;AtualizarContatoUseCase&gt;();
+        var faker = new Faker(&quot;pt_BR&quot;);
+        var input = new AtualizarContatoInput
+        {
+            Id = contato.Id,
+            Nome = faker.Person.FirstName,
+            Sobrenome = faker.Person.LastName,
+            Email = faker.Person.Email,
+            Telefones = [_fixture.GerarTelefoneValido()]
+        };
+
+        // Act
+        var result = await useCase.ExecuteAsync(input);
+
+        // Assert
+        result.IsSuccess.Should().BeTrue(&quot;o contato deve ser atualizado&quot;);
+        _mocker.GetMock&lt;IContatoRepository&gt;().Verify(r =&gt; r.Atualizar(contato), Times.Once);
+        _mocker.GetMock&lt;IContatoRepository&gt;().Verify(r =&gt; r.UnitOfWork.Commit(), Times.Once);
+    }
+
+    [Fact(DisplayName = &quot;Atualizar contato e contato n&#227;o existe deve retornar erro&quot;)]
+    [Trait(&quot;Category&quot;, &quot;AtualizarContatoUseCase&quot;)]
+    public async Task AtualizarContatoUseCase_ContatoNaoExiste_DeveRetornarErro()
+    {
+        // Arrange
+        _mocker.GetMock&lt;IContatoRepository&gt;().Setup(r =&gt; r.ObterContatoPorIdAsync(It.IsAny&lt;Guid&gt;(), true))
+            .ReturnsAsync(() =&gt; null);
+        var useCase = _mocker.CreateInstance&lt;AtualizarContatoUseCase&gt;();
+        var faker = new Faker(&quot;pt_BR&quot;);
+        var input = new AtualizarContatoInput
+        {
+            Id = Guid.NewGuid(),
+            Nome = faker.Person.FirstName,
+            Sobrenome = faker.Person.LastName,
+            Email = faker.Person.Email,
+            Telefones = [_fixture.GerarTelefoneValido()]
+        };
+
+        // Act &amp; Assert
+        await Assert.ThrowsAsync&lt;DomainException&gt;(() =&gt; useCase.ExecuteAsync(input));
+    }
+
+    [Fact(DisplayName = &quot;Atualizar contato com dados inv&#225;lidos deve retornar erro&quot;)]
+    [Trait(&quot;Category&quot;, &quot;AtualizarContatoUseCase&quot;)]
+    public async Task AtualizarContatoUseCase_ContatoInvalido_DeveRetornarErro()
+    {
+        // Arrange
+        var contatoInvalido = _fixture.GerarContatoInvalido();
+        var contatoValido = _fixture.GerarContatoValido();
+        _mocker.GetMock&lt;IContatoRepository&gt;().Setup(r =&gt; r.ObterContatoPorIdAsync(It.IsAny&lt;Guid&gt;(), true))
+            .ReturnsAsync(contatoValido);
+        var useCase = _mocker.CreateInstance&lt;AtualizarContatoUseCase&gt;();
+        var input = new AtualizarContatoInput
+        {
+            Id = contatoValido.Id,
+            Nome = contatoInvalido.Nome.PrimeiroNome,
+            Sobrenome = contatoInvalido.Nome.Sobrenome,
+            Email = contatoInvalido.Email.Endereco,
+            Telefones = contatoInvalido.Telefones.ToList()
+        };
+
+        // Act
+        var result = await useCase.ExecuteAsync(input);
+
+        // Assert
+        // Assert
+        result.IsSuccess.Should().BeFalse(&quot;o contato deve n&#227;o deve ser atualizado&quot;);
+        _mocker.GetMock&lt;IContatoRepository&gt;().Verify(r =&gt; r.Atualizar(contatoInvalido), Times.Never);
+        _mocker.GetMock&lt;IContatoRepository&gt;().Verify(r =&gt; r.UnitOfWork.Commit(), Times.Never);
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[19,5,19,62,1],[20,5,20,6,1],[21,9,21,28,1],[22,9,22,36,1],[23,5,23,6,1],[28,5,28,6,1],[30,9,30,53,1],[31,9,32,36,1],[33,9,33,100,1],[33,100,33,104,1],[33,104,33,106,1],[34,9,34,73,1],[35,9,35,40,1],[36,9,43,11,1],[46,9,46,56,1],[49,9,49,75,1],[50,9,50,93,1],[51,9,51,94,1],[52,5,52,6,1],[57,5,57,6,1],[59,9,60,33,1],[60,33,60,37,1],[60,37,60,39,1],[61,9,61,73,1],[62,9,62,40,1],[63,9,70,11,1],[73,9,73,57,1],[73,57,73,84,1],[73,84,73,86,1],[74,5,74,6,1],[79,5,79,6,1],[81,9,81,63,1],[82,9,82,59,1],[83,9,84,42,1],[85,9,85,73,1],[86,9,93,11,1],[96,9,96,56,1],[100,9,100,85,1],[101,9,101,102,1],[102,9,102,95,1],[103,5,103,6,1]]);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\dev\fiap-net\fiap.arquitetura.fase1\src\Fase1.Contatos.Domain\Entities\Contato.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using Fase1.Commons.Domain.Communication;
+using Fase1.Commons.Domain.DomainObjects;
+using Fase1.Contatos.Domain.ValueObjects;
+
+namespace Fase1.Contatos.Domain.Entities;
+
+public class Contato : Entity, IAggregateRoot
+{
+    private List&lt;Telefone&gt; _telefones;
+
+    protected Contato()
+    {
+    }
+
+    public Contato(Nome nome, List&lt;Telefone&gt; telefone, Email? email)
+    {
+        Nome = nome;
+        _telefones = telefone;
+        Email = email;
+    }
+
+    public Contato(Guid id, Nome nome, List&lt;Telefone&gt; telefone, Email? email)
+    {
+        Id = id;
+        Nome = nome;
+        _telefones = telefone;
+        Email = email;
+    }
+
+    public Nome Nome { get; private set; }
+    public Email? Email { get; private set; }
+    public IReadOnlyCollection&lt;Telefone&gt; Telefones =&gt; _telefones;
+
+    public ValidationResult Validar()
+    {
+        var result = new ValidationResult();
+        ValidarNome(ref result);
+        ValidarEmail(ref result);
+        ValidarListaTelefones(ref result);
+        return result;
+    }
+
+    private void ValidarNome(ref ValidationResult result)
+    {
+        var resultNome = Nome.Validar();
+        if (!resultNome.IsValid) result.Errors.AddRange(resultNome.Errors);
+    }
+
+    private void ValidarEmail(ref ValidationResult result)
+    {
+        var resultEmail = Email?.Validar();
+        if (resultEmail is not null &amp;&amp; !resultEmail.IsValid) result.Errors.AddRange(resultEmail.Errors);
+    }
+
+    private void ValidarListaTelefones(ref ValidationResult result)
+    {
+        foreach (var telefone in Telefones)
+        {
+            var telefoneResult = telefone.Validar();
+
+            if (!telefoneResult.IsValid) result.Errors.AddRange(telefone.Validar().Errors);
+        }
+    }
+
+    public void AtualizarNome(Nome nome)
+    {
+        Nome = nome;
+    }
+
+    public void AtualizarTelefones(List&lt;Telefone&gt; telefones)
+    {
+        _telefones = telefones;
+    }
+
+    public void AtualizarEmail(Email? email)
+    {
+        Email = email;
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[11,5,11,24,0],[12,5,12,6,0],[13,5,13,6,0],[15,5,15,69,1],[16,5,16,6,1],[17,9,17,21,1],[18,9,18,31,1],[19,9,19,23,1],[20,5,20,6,1],[22,5,22,78,0],[23,5,23,6,0],[24,9,24,17,0],[25,9,25,21,0],[26,9,26,31,0],[27,9,27,23,0],[28,5,28,6,0],[30,24,30,28,1],[30,29,30,41,1],[31,27,31,31,1],[31,32,31,44,1],[32,55,32,65,1],[35,5,35,6,1],[36,9,36,45,1],[37,9,37,33,1],[38,9,38,34,1],[39,9,39,43,1],[40,9,40,23,1],[41,5,41,6,1],[44,5,44,6,1],[45,9,45,41,1],[46,9,46,33,1],[46,34,46,76,1],[47,5,47,6,1],[50,5,50,6,1],[51,9,51,44,1],[52,9,52,61,1],[52,62,52,105,1],[53,5,53,6,1],[56,5,56,6,1],[57,9,57,16,1],[57,18,57,30,1],[57,31,57,33,1],[57,34,57,43,1],[58,9,58,10,1],[59,13,59,53,1],[61,13,61,41,1],[61,42,61,92,1],[62,9,62,10,1],[63,5,63,6,1],[66,5,66,6,1],[67,9,67,21,1],[68,5,68,6,1],[71,5,71,6,1],[72,9,72,32,1],[73,5,73,6,1],[76,5,76,6,1],[77,9,77,23,1],[78,5,78,6,1]]);
+    </script>
+  </body>
+</html>

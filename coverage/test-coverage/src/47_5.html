@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\dev\fiap-net\fiap.arquitetura.fase1\src\Fase1.Contatos.Api\Program.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using Fase1.Contatos.Api.Config;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddAppConfig(builder.Configuration);
+
+var app = builder.Build();
+
+app.UseAppConfig();
+
+app.Run();
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[3,1,3,50,0],[5,1,5,54,0],[7,1,7,27,0],[9,1,9,20,0],[11,1,11,11,0]]);
+    </script>
+  </body>
+</html>

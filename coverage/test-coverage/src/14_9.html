@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\dev\fiap-net\fiap.arquitetura.fase1\test\Fase1.Contatos.Application.Test\UseCases\ExcluirContatoUseCaseTest.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using Fase1.Commons.Domain.DomainObjects;
+using Fase1.Contatos.Application.Test.Fixtures;
+using Fase1.Contatos.Application.UseCases;
+using Fase1.Contatos.Domain.Entities;
+using Fase1.Contatos.Domain.Repositories;
+using Moq;
+using Moq.AutoMock;
+
+namespace Fase1.Contatos.Application.Test.UseCases;
+
+[Collection(nameof(ContatoCollection))]
+public class ExcluirContatoUseCaseTest
+{
+    private readonly ContatoFixture _fixture;
+    private readonly AutoMocker _mocker;
+
+    public ExcluirContatoUseCaseTest(ContatoFixture fixture)
+    {
+        _fixture = fixture;
+        _mocker = new AutoMocker();
+    }
+
+    [Fact(DisplayName = &quot;Excluir contato v&#225;lido deve excluir contato com sucesso&quot;)]
+    [Trait(&quot;Category&quot;, &quot;ExcluirContatoUseCase&quot;)]
+    public async Task ExcluirContatoUseCase_ContatoValido_DeveExcluirContatoComSucesso()
+    {
+        // Arrange
+        var contato = _fixture.GerarContatoValido();
+        _mocker.GetMock&lt;IContatoRepository&gt;().Setup(r =&gt; r.ObterContatoPorIdAsync(It.IsAny&lt;Guid&gt;(), It.IsAny&lt;bool&gt;()))
+            .ReturnsAsync(contato);
+        _mocker.GetMock&lt;IContatoRepository&gt;().Setup(r =&gt; r.UnitOfWork.Commit()).ReturnsAsync(() =&gt; true);
+        var useCase = _mocker.CreateInstance&lt;ExcluirContatoUseCase&gt;();
+
+        // Act
+        await useCase.ExecuteAsync(contato.Id);
+
+        // Assert
+        _mocker.GetMock&lt;IContatoRepository&gt;().Verify(r =&gt; r.Excluir(It.IsAny&lt;Contato&gt;()), Times.Once);
+        _mocker.GetMock&lt;IContatoRepository&gt;().Verify(r =&gt; r.UnitOfWork.Commit(), Times.Once);
+    }
+
+    [Fact(DisplayName = &quot;Excluir contato inv&#225;lido deve retornar erro&quot;)]
+    [Trait(&quot;Category&quot;, &quot;ExcluirContatoUseCase&quot;)]
+    public async Task ExcluirContatoUseCase_ContatoInvalido_DeveRetornarErro()
+    {
+        // Arrange
+        _mocker.GetMock&lt;IContatoRepository&gt;().Setup(r =&gt; r.ObterContatoPorIdAsync(It.IsAny&lt;Guid&gt;(), It.IsAny&lt;bool&gt;()))
+            .ReturnsAsync(() =&gt; null);
+        var useCase = _mocker.CreateInstance&lt;ExcluirContatoUseCase&gt;();
+
+        // Act &amp; Assert
+        await Assert.ThrowsAsync&lt;DomainException&gt;(() =&gt; useCase.ExecuteAsync(It.IsAny&lt;Guid&gt;()));
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[17,5,17,61,1],[18,5,18,6,1],[19,9,19,28,1],[20,9,20,36,1],[21,5,21,6,1],[26,5,26,6,1],[28,9,28,53,1],[29,9,30,36,1],[31,9,31,100,1],[31,100,31,104,1],[31,104,31,106,1],[32,9,32,71,1],[35,9,35,48,1],[38,9,38,103,1],[39,9,39,94,1],[40,5,40,6,1],[45,5,45,6,1],[47,9,48,33,1],[48,33,48,37,1],[48,37,48,39,1],[49,9,49,71,1],[52,9,52,57,1],[52,57,52,95,1],[52,95,52,97,1],[53,5,53,6,1]]);
+    </script>
+  </body>
+</html>

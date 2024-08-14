@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\dev\fiap-net\fiap.arquitetura.fase1\src\Fase1.Contatos.Infra.Data\ContatoDbContext.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using Fase1.Commons.Domain.Data;
+using Fase1.Contatos.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+
+namespace Fase1.Contatos.Infra.Data;
+
+public class ContatoDbContext : DbContext, IUnitOfWork
+{
+    public ContatoDbContext(DbContextOptions&lt;ContatoDbContext&gt; options) : base(options)
+    {
+        DisableTrackingScope();
+    }
+
+    public DbSet&lt;Contato&gt; Contatos { get; set; }
+
+    public async Task&lt;bool&gt; Commit()
+    {
+        return await SaveChangesAsync() &gt; 0;
+    }
+
+    public void EnableTrackingScope()
+    {
+        ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.TrackAll;
+        ChangeTracker.AutoDetectChangesEnabled = true;
+    }
+
+    public void DisableTrackingScope()
+    {
+        ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+        ChangeTracker.AutoDetectChangesEnabled = false;
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        foreach (var relationship in modelBuilder.Model.GetEntityTypes()
+                     .SelectMany(e =&gt; e.GetForeignKeys()))
+            relationship.DeleteBehavior = DeleteBehavior.ClientSetNull;
+
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ContatoDbContext).Assembly);
+
+        base.OnModelCreating(modelBuilder);
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[9,75,9,88,0],[10,5,10,6,0],[11,9,11,32,0],[12,5,12,6,0],[14,38,14,42,0],[14,43,14,47,0],[17,5,17,6,0],[18,9,18,45,0],[19,5,19,6,0],[22,5,22,6,0],[23,9,23,78,0],[24,9,24,55,0],[25,5,25,6,0],[28,5,28,6,0],[29,9,29,80,0],[30,9,30,56,0],[31,5,31,6,0],[34,5,34,6,0],[35,9,35,16,0],[35,18,35,34,0],[35,35,35,37,0],[35,38,36,39,0],[36,39,36,57,0],[36,57,36,58,0],[37,13,37,72,0],[39,9,39,89,0],[41,9,41,44,0],[42,5,42,6,0]]);
+    </script>
+  </body>
+</html>
