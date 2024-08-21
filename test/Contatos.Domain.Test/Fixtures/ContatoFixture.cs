@@ -9,7 +9,7 @@ public class ContatoCollection : ICollectionFixture<ContatoFixture>
 {
 }
 
-public class ContatoFixture : IDisposable
+public sealed class ContatoFixture : IDisposable
 {
     private readonly Faker _faker;
 
@@ -34,7 +34,7 @@ public class ContatoFixture : IDisposable
 
     public Nome GerarNomePrimeiroNomeNulo()
     {
-        return GerarNome(null, _faker.Person.LastName);
+        return GerarNome(null!, _faker.Person.LastName);
     }
 
     public Nome GerarNomePrimeiroNomeVazio()
@@ -54,12 +54,12 @@ public class ContatoFixture : IDisposable
 
     public Email GerarEmailNulo()
     {
-        return new Email(null);
+        return new Email(null!);
     }
 
     public Email GerarEmailVazio()
     {
-        return new Email(null);
+        return new Email(null!);
     }
 
     public Email GerarEmailInvalido()
@@ -86,7 +86,7 @@ public class ContatoFixture : IDisposable
 
     public Telefone GerarTelefoneDddNulo()
     {
-        return GerarTelefone(null, _faker.Random.Replace("9########"), TipoTelefone.Celular);
+        return GerarTelefone(null!, _faker.Random.Replace("9########"), TipoTelefone.Celular);
     }
 
     public Telefone GerarTelefoneDddVazio()
@@ -96,7 +96,7 @@ public class ContatoFixture : IDisposable
 
     public Telefone GerarTelefoneNumeroNulo()
     {
-        return GerarTelefone(_faker.Random.Int(11, 99).ToString(), null, TipoTelefone.Celular);
+        return GerarTelefone(_faker.Random.Int(11, 99).ToString(), null!, TipoTelefone.Celular);
     }
 
     public Telefone GerarTelefoneNumeroVazio()

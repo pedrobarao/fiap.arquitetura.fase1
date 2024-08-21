@@ -6,7 +6,7 @@ namespace Contatos.Domain.ValueObjects;
 
 public record Telefone
 {
-    public Telefone()
+    protected Telefone()
     {
     }
 
@@ -17,9 +17,15 @@ public record Telefone
         Tipo = tipo;
     }
 
-    public string Ddd { get; init; }
-    public string Numero { get; init; }
+    public Guid ContatoId { get; set; }
+    public string Ddd { get; init; } = null!;
+    public string Numero { get; init; } = null!;
     public TipoTelefone Tipo { get; init; }
+
+    public void AssociarContato(Guid contatoId)
+    {
+        ContatoId = contatoId;
+    }
 
     public override string ToString()
     {

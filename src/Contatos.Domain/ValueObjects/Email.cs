@@ -7,7 +7,7 @@ public record Email
 {
     public const int MaxLength = 254;
 
-    public Email()
+    protected Email()
     {
     }
 
@@ -18,7 +18,7 @@ public record Email
 
     public string? Endereco { get; private set; }
 
-    public override string ToString()
+    public override string? ToString()
     {
         return Endereco;
     }

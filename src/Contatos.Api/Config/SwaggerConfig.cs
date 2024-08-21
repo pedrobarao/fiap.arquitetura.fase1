@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
-using AspNetCore.Scalar;
 using Microsoft.OpenApi.Models;
+
+namespace Contatos.Api.Config;
 
 public static class SwaggerConfig
 {
@@ -19,17 +20,20 @@ public static class SwaggerConfig
 
     public static WebApplication UseSwaggerConfig(this WebApplication app)
     {
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-            app.UseScalar(options =>
-            {
-                options.UseTheme(Theme.Default);
-                options.RoutePrefix = "doc";
-            });
-        }
+        // Swagger
+        app.UseSwaggerUI();
+        app.UseSwagger();
 
+        // Scalar /scalar/v1
+        // app.UseSwagger(options => { options.RouteTemplate = "openapi/{documentName}.json"; });
+        // app.MapScalarApiReference(o => { o.Theme = "light"; });
+        
+        // Redoc
+        app.UseReDoc(c =>
+        {
+            c.RoutePrefix = "doc";
+        });
+        
         return app;
     }
 }

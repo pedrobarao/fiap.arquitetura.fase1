@@ -28,7 +28,7 @@ public class AtualizaContatoUseCaseTest
     {
         // Arrange
         var contato = _fixture.GerarContatoValido();
-        _mocker.GetMock<IContatoRepository>().Setup(r => r.ObterContatoPorIdAsync(It.IsAny<Guid>(), true))
+        _mocker.GetMock<IContatoRepository>().Setup(r => r.ObterContatoPorIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(contato);
         _mocker.GetMock<IContatoRepository>().Setup(r => r.UnitOfWork.Commit()).ReturnsAsync(() => true);
         var useCase = _mocker.CreateInstance<AtualizarContatoUseCase>();
@@ -56,7 +56,7 @@ public class AtualizaContatoUseCaseTest
     public async Task AtualizarContatoUseCase_ContatoNaoExiste_DeveRetornarErro()
     {
         // Arrange
-        _mocker.GetMock<IContatoRepository>().Setup(r => r.ObterContatoPorIdAsync(It.IsAny<Guid>(), true))
+        _mocker.GetMock<IContatoRepository>().Setup(r => r.ObterContatoPorIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(() => null);
         var useCase = _mocker.CreateInstance<AtualizarContatoUseCase>();
         var faker = new Faker("pt_BR");
@@ -80,7 +80,7 @@ public class AtualizaContatoUseCaseTest
         // Arrange
         var contatoInvalido = _fixture.GerarContatoInvalido();
         var contatoValido = _fixture.GerarContatoValido();
-        _mocker.GetMock<IContatoRepository>().Setup(r => r.ObterContatoPorIdAsync(It.IsAny<Guid>(), true))
+        _mocker.GetMock<IContatoRepository>().Setup(r => r.ObterContatoPorIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(contatoValido);
         var useCase = _mocker.CreateInstance<AtualizarContatoUseCase>();
         var input = new AtualizarContatoInput
@@ -88,7 +88,7 @@ public class AtualizaContatoUseCaseTest
             Id = contatoValido.Id,
             Nome = contatoInvalido.Nome.PrimeiroNome,
             Sobrenome = contatoInvalido.Nome.Sobrenome,
-            Email = contatoInvalido.Email.Endereco,
+            Email = contatoInvalido.Email!.Endereco,
             Telefones = contatoInvalido.Telefones.ToList()
         };
 

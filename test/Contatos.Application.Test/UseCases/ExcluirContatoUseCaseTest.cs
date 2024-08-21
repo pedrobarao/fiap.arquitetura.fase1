@@ -26,7 +26,7 @@ public class ExcluirContatoUseCaseTest
     {
         // Arrange
         var contato = _fixture.GerarContatoValido();
-        _mocker.GetMock<IContatoRepository>().Setup(r => r.ObterContatoPorIdAsync(It.IsAny<Guid>(), It.IsAny<bool>()))
+        _mocker.GetMock<IContatoRepository>().Setup(r => r.ObterContatoPorIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(contato);
         _mocker.GetMock<IContatoRepository>().Setup(r => r.UnitOfWork.Commit()).ReturnsAsync(() => true);
         var useCase = _mocker.CreateInstance<ExcluirContatoUseCase>();
@@ -44,7 +44,7 @@ public class ExcluirContatoUseCaseTest
     public async Task ExcluirContatoUseCase_ContatoInvalido_DeveRetornarErro()
     {
         // Arrange
-        _mocker.GetMock<IContatoRepository>().Setup(r => r.ObterContatoPorIdAsync(It.IsAny<Guid>(), It.IsAny<bool>()))
+        _mocker.GetMock<IContatoRepository>().Setup(r => r.ObterContatoPorIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(() => null);
         var useCase = _mocker.CreateInstance<ExcluirContatoUseCase>();
 

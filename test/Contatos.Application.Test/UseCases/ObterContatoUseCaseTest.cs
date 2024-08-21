@@ -26,7 +26,7 @@ public class ObterContatoUseCaseTest
         // Arrange
         var contato = _fixture.GerarContatoValido();
         _mocker.GetMock<IContatoRepository>().Setup(r =>
-                r.ObterContatoPorIdAsync(It.IsAny<Guid>(), It.IsAny<bool>()))
+                r.ObterContatoPorIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(contato);
         var useCase = _mocker.CreateInstance<ObterContatoUseCase>();
 
@@ -43,7 +43,7 @@ public class ObterContatoUseCaseTest
     {
         // Arrange
         _mocker.GetMock<IContatoRepository>().Setup(r =>
-                r.ObterContatoPorIdAsync(It.IsAny<Guid>(), It.IsAny<bool>()))
+                r.ObterContatoPorIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(() => null);
         var useCase = _mocker.CreateInstance<ObterContatoUseCase>();
 

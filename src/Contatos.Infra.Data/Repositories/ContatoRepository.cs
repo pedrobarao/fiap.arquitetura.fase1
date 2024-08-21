@@ -17,11 +17,9 @@ public sealed class ContatoRepository(ContatoDbContext context) : IContatoReposi
         context.Contatos.Add(contato);
     }
 
-    public async Task<Contato?> ObterContatoPorIdAsync(Guid id, bool tracking = false)
+    public async Task<Contato?> ObterContatoPorIdAsync(Guid id)
     {
-        var query = context.Contatos.AsQueryable();
-        if (!tracking) query = query.AsNoTracking();
-        return await query.FirstOrDefaultAsync(p => p.Id == id);
+        return await context.Contatos.FirstOrDefaultAsync(p => p.Id == id);
     }
 
     public async Task<PagedResult<Contato>> ObterContatosPaginados(int pageSize, int pageIndex, string? query = null)

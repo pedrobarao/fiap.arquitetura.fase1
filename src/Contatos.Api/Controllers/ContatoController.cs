@@ -9,7 +9,6 @@ namespace Contatos.Api.Controllers;
 
 [Route("api/v1/contatos")]
 public class ContatoController(
-    ILogger<ContatoController> logger,
     IListarContatoUseCase listarContatoUseCase,
     IObterContatoUseCase obterContatoUseCase,
     ICadastrarContatoUseCase cadastrarContatoUseCase,
@@ -70,7 +69,7 @@ public class ContatoController(
             return Respond();
         }
 
-        return Respond(Created($"contatos/{result.Data.Id}", result.Data));
+        return Respond(Created($"contatos/{result.Data!.Id}", result.Data));
     }
 
     /// <summary>
@@ -93,8 +92,13 @@ public class ContatoController(
         }
 
         var result = await atualizarContatoUseCase.ExecuteAsync(input);
-        
-        return Respond(Ok(null));
+
+        if (!result.IsSuccess)
+        {
+            AddErrors(result.Errors);
+        }
+
+        return Respond();
     }
 
     /// <summary>

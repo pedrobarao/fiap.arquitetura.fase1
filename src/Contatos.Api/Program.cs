@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Contatos.Api.Config;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,3 +10,9 @@ var app = builder.Build();
 app.UseAppConfig();
 
 app.Run();
+
+
+[ExcludeFromCodeCoverage]
+public static partial class Program
+{
+}

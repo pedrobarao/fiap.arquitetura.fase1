@@ -23,6 +23,12 @@ public class ContatoDbContext : DbContext, IUnitOfWork
         ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         ChangeTracker.AutoDetectChangesEnabled = false;
     }
+    
+    public void EnableTrackingScope()
+    {
+        ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.TrackAll;
+        ChangeTracker.AutoDetectChangesEnabled = true;
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -6,7 +6,7 @@ namespace Contatos.Domain.Entities;
 
 public class Contato : Entity, IAggregateRoot
 {
-    private List<Telefone> _telefones;
+    private List<Telefone> _telefones = null!;
 
     protected Contato()
     {
@@ -27,7 +27,7 @@ public class Contato : Entity, IAggregateRoot
         Email = email;
     }
 
-    public Nome Nome { get; private set; }
+    public Nome Nome { get; private set; } = null!;
     public Email? Email { get; private set; }
     public IReadOnlyCollection<Telefone> Telefones => _telefones;
 

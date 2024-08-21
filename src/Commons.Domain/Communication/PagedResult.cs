@@ -4,6 +4,7 @@ public class PagedResult<T> where T : class
 {
     public PagedResult()
     {
+        Items = [];
     }
 
     public PagedResult(IEnumerable<T>? items, int totalItems, int pageIndex, int pageSize, string? filter)

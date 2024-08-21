@@ -4,7 +4,7 @@ namespace Contatos.Domain.ValueObjects;
 
 public class Nome
 {
-    public Nome()
+    protected Nome()
     {
     }
 
@@ -14,7 +14,7 @@ public class Nome
         Sobrenome = sobrenome;
     }
 
-    public string PrimeiroNome { get; private set; }
+    public string PrimeiroNome { get; private set; } = null!;
     public string? Sobrenome { get; private set; }
 
     public override string ToString()

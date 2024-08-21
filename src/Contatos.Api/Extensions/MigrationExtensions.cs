@@ -1,8 +1,10 @@
-﻿using Contatos.Infra.Data;
+﻿using System.Diagnostics.CodeAnalysis;
+using Contatos.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Contatos.Api.Extensions;
 
+[ExcludeFromCodeCoverage]
 public static class MigrationExtensions
 {
     public static void ApplyMigrations(this WebApplication app)
