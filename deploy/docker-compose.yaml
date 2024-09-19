@@ -6,7 +6,7 @@ services:
       - postgres
     build:
       context: ../
-      dockerfile: ./src/Fase1.Contatos.Api/Dockerfile
+      dockerfile: ./src/Contatos.Api/Dockerfile
     ports:
       - "8080:8080"
     environment:
@@ -16,7 +16,7 @@ services:
     container_name: contatos-db
     environment:
       POSTGRES_USER: contatos
-      POSTGRES_PASSWORD: fase1
+      POSTGRES_PASSWORD: contatos
       POSTGRES_DB: contatos
     ports:
       - "5432:5432"

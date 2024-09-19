@@ -17,13 +17,13 @@ public class ContatoDbContext : DbContext, IUnitOfWork
     {
         return await SaveChangesAsync() > 0;
     }
-    
+
     public void DisableTrackingScope()
     {
         ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         ChangeTracker.AutoDetectChangesEnabled = false;
     }
-    
+
     public void EnableTrackingScope()
     {
         ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.TrackAll;

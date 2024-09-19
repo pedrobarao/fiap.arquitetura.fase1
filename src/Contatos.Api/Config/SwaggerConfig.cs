@@ -27,13 +27,10 @@ public static class SwaggerConfig
         // Scalar /scalar/v1
         // app.UseSwagger(options => { options.RouteTemplate = "openapi/{documentName}.json"; });
         // app.MapScalarApiReference(o => { o.Theme = "light"; });
-        
+
         // Redoc
-        app.UseReDoc(c =>
-        {
-            c.RoutePrefix = "doc";
-        });
-        
+        app.UseReDoc(c => { c.RoutePrefix = "doc"; });
+
         return app;
     }
 }

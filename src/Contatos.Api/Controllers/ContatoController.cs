@@ -2,7 +2,6 @@ using Commons.Domain.Communication;
 using Contatos.Application.DTOs.Inputs;
 using Contatos.Application.DTOs.Outputs;
 using Contatos.Application.UseCases.Interfaces;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Contatos.Api.Controllers;
@@ -93,10 +92,7 @@ public class ContatoController(
 
         var result = await atualizarContatoUseCase.ExecuteAsync(input);
 
-        if (!result.IsSuccess)
-        {
-            AddErrors(result.Errors);
-        }
+        if (!result.IsSuccess) AddErrors(result.Errors);
 
         return Respond();
     }

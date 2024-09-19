@@ -23,7 +23,7 @@
         <Compile Remove="Migrations\20240809225623_BaseInicial.cs"/>
         <Compile Remove="Migrations\20240809225623_BaseInicial.Designer.cs"/>
         <Compile Remove="Migrations\ContatoDbContextModelSnapshot.cs"/>
-        <Compile Remove="Extensions\**" />
+        <Compile Remove="Extensions\**"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -31,11 +31,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Remove="Extensions\**" />
+        <EmbeddedResource Remove="Extensions\**"/>
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="Extensions\**" />
+        <None Remove="Extensions\**"/>
     </ItemGroup>
 
 </Project>

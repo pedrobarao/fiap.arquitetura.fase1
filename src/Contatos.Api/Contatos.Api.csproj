@@ -17,21 +17,21 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="AspNetCore.HealthChecks.NpgSql" Version="8.0.1" />
-        <PackageReference Include="AspNetCore.HealthChecks.UI" Version="8.0.1" />
-        <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="8.0.1" />
+        <PackageReference Include="AspNetCore.HealthChecks.NpgSql" Version="8.0.1"/>
+        <PackageReference Include="AspNetCore.HealthChecks.UI" Version="8.0.1"/>
+        <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="8.0.1"/>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.7"/>
-        <PackageReference Include="Scalar.AspNetCore" Version="1.1.2" />
+        <PackageReference Include="Scalar.AspNetCore" Version="1.1.2"/>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.4"/>
         <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.7.0"/>
-        <PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="6.7.1" />
+        <PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="6.7.1"/>
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\Contatos.Application\Contatos.Application.csproj"/>
         <ProjectReference Include="..\Contatos.Domain\Contatos.Domain.csproj"/>
-        <ProjectReference Include="..\Contatos.Infra.Data\Contatos.Infra.Data.csproj" />
+        <ProjectReference Include="..\Contatos.Infra.Data\Contatos.Infra.Data.csproj"/>
     </ItemGroup>
 
     <ItemGroup>

@@ -34,7 +34,7 @@ public static class AppConfig
         app.UseAuthorization();
 
         app.MapControllers();
-        
+
         // Comente esta linha para desabilitar a aplicação de migrações
         app.ApplyMigrations();
 
