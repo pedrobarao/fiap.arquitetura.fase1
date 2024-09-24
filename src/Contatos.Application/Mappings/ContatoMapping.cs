@@ -11,14 +11,13 @@ public class ContatoMapping
         var contatosResponse = contatosPaginados.Items.Select(ToObterContatoOutput).ToList();
 
         return new PagedResult<ObterContatoOutput>
-        {
-            Items = contatosResponse,
-            TotalItems = contatosPaginados.TotalItems,
-            TotalPages = contatosPaginados.TotalPages,
-            PageIndex = contatosPaginados.PageIndex,
-            PageSize = contatosPaginados.PageSize,
-            Filter = contatosPaginados.Filter
-        };
+        (
+            contatosResponse,
+            contatosPaginados.TotalItems,
+            contatosPaginados.PageIndex,
+            contatosPaginados.PageSize,
+            contatosPaginados.Filter
+        );
     }
 
     public static ObterContatoOutput ToObterContatoOutput(Contato contato)

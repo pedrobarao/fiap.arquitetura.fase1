@@ -1,60 +1,59 @@
-﻿using Contatos.Domain.Test.Fixtures;
-using FluentAssertions;
+﻿using FluentAssertions;
+using Test.Commons.Builders.ValueObjects;
 
 namespace Contatos.Domain.Test.ValueObjects;
 
-[Collection(nameof(ContatoCollection))]
 public class NomeTest
 {
-    private readonly ContatoFixture _fixture;
-
-    public NomeTest(ContatoFixture fixture)
-    {
-        _fixture = fixture;
-    }
-
-    [Fact(DisplayName = "Nome com valores válidos deve estar válido")]
+    [Theory(DisplayName = "Primeiro nome inválido deve falhar")]
+    [InlineData(null)]
+    [InlineData("")]
     [Trait("Category", "Nome")]
-    public void Nome_ValoresValidos_DeveEstarValido()
+    public void Nome_PrimeiroNomeInvalido_DeveEstarInvalido(string primeiroNome)
     {
         // Arrange
-        var nome = _fixture.GerarNomeValido();
+        var nome = new NomeBuilder()
+            .ComPrimeiroNome(primeiroNome)
+            .Build();
 
         // Act
         var result = nome.Validar();
 
         // Assert
-        result.IsValid.Should().BeTrue("o nome deve estar válido");
+        result.IsValid.Should().BeFalse("o nome {0} deve estar inválido", nome);
     }
 
-    [Fact(DisplayName = "Nome com primeiro nome nulo ou vazio deve falhar")]
+    [Fact(DisplayName = "Sobrenome nulo ou vazio deve passar")]
     [Trait("Category", "Nome")]
-    public void Nome_PrimeiroNomeNuloOuVazio_DeveEstarInvalido()
+    public void Nome_SobrenomeNuloOuVazio_DeveEstarValido()
     {
         // Arrange
-        var primeiroNomeNulo = _fixture.GerarNomePrimeiroNomeNulo();
-        var primeiroNomeVazio = _fixture.GerarNomePrimeiroNomeVazio();
+        var nomeSobrenomeNulo = new NomeBuilder()
+            .ComSobrenomeNulo()
+            .Build();
+        
+        var nomeSobrenomeVazio = new NomeBuilder()
+            .ComSobrenomeVazio()
+            .Build();
 
         // Act
-        var resultNulo = primeiroNomeNulo.Validar();
-        var resultVazio = primeiroNomeVazio.Validar();
+        var resultNomeSobrenomeNulo = nomeSobrenomeNulo.Validar();
+        var resultNomeSobrenomeVazio = nomeSobrenomeVazio.Validar();
 
         // Assert
-        resultNulo.IsValid.Should().BeFalse("o nome deve estar inválido");
-        resultVazio.IsValid.Should().BeFalse("o nome deve estar inválido");
+        resultNomeSobrenomeNulo.IsValid.Should().BeTrue("o nome {0} deve estar válido", nomeSobrenomeNulo);
+        resultNomeSobrenomeVazio.IsValid.Should().BeTrue("o nome {0} deve estar válido", nomeSobrenomeVazio);
     }
-
-    [Fact(DisplayName = "Nome válido deve retornar nome completo corretamente")]
+    
+    [Fact(DisplayName = "ToString deve retornar o nome completo")]
     [Trait("Category", "Nome")]
-    public void Nome_NomeValido_DeveRetornarNomeCompletoCorretamente()
+    public void Nome_ToString_DeveRetornarONomeESobrenome()
     {
         // Arrange
-        var nome = _fixture.GerarNomeValido();
+        var nome = new NomeBuilder().Build();
+        var expected = $"{nome.PrimeiroNome} {nome.Sobrenome}";
 
-        // Act
-        var nomeCompleto = nome.ToString();
-
-        // Assert
-        Assert.Equal($"{nome.PrimeiroNome} {nome.Sobrenome}", nomeCompleto);
+        // Act & Assert
+        nome.ToString().Should().Be(expected, "o nome {0} deve ser igual a {1}", nome, expected);
     }
 }

@@ -10,7 +10,7 @@ public record Telefone
     {
     }
 
-    public Telefone(string ddd, string numero, TipoTelefone tipo)
+    public Telefone(short ddd, string numero, TipoTelefone tipo)
     {
         Ddd = ddd;
         Numero = StringUtil.JustNumbers(numero);
@@ -18,7 +18,7 @@ public record Telefone
     }
 
     public Guid ContatoId { get; set; }
-    public string Ddd { get; init; } = null!;
+    public short Ddd { get; init; }
     public string Numero { get; init; } = null!;
     public TipoTelefone Tipo { get; init; }
 
@@ -35,25 +35,29 @@ public record Telefone
     public ValidationResult Validar()
     {
         var result = new ValidationResult();
-
-        if (!ValidarFormato(Ddd, Numero, Tipo)) result.Errors.Add($"Telefone {ToString()} inválido.");
-
+        if (!ValidarDdd(Ddd)) result.Errors.Add($"{Ddd} não é um DDD válido.");
+        if (!ValidarNumero(Numero, Tipo)) result.Errors.Add($"{Numero} não é um número de telefone válido.");
         return result;
     }
 
-    public static bool ValidarFormato(string ddd, string numero, TipoTelefone tipo)
+    public static bool ValidarDdd(short ddd)
     {
+        return ddd is >= 11 and <= 99;
+    }
+
+    public static bool ValidarNumero(string numero, TipoTelefone tipo)
+    {
+        if (string.IsNullOrEmpty(numero)) return false;
         numero = StringUtil.JustNumbers(numero);
-        var numeroComDdd = $"{ddd}{numero}";
+        if (numero.Length != 8 && numero.Length != 9) return false;
 
-        if (string.IsNullOrWhiteSpace(numeroComDdd)) return false;
+        if (!Regex.IsMatch(numero, "^[0-9]")) return false;
 
-        if (numeroComDdd.Length != 10 && numeroComDdd.Length != 11) return false;
+        if (tipo == TipoTelefone.Celular)
+        {
+            return numero.Length == 9 && numero.StartsWith('9');
+        }
 
-        if (!Regex.IsMatch(numeroComDdd, "^[1-9][0-9]")) return false;
-
-        if (tipo == TipoTelefone.Celular && numero.Length == 11 && !numero.StartsWith('9')) return false;
-
-        return true;
+        return numero.Length == 8;
     }
 }

@@ -10,7 +10,7 @@ public class ObterContatoOutput
 
     public class TelefoneOutput
     {
-        public string Ddd { get; set; } = null!;
+        public short Ddd { get; set; }
         public string Numero { get; set; } = null!;
         public string Tipo { get; set; } = null!;
     }
